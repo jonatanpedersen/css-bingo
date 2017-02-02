@@ -4,6 +4,8 @@
   "description": "Removes unused rules from css by looking at used classes and ids in html.",
   "main": "index.js",
   "scripts": {
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "postversion": "git push && git push --tags",
     "preversion": "npm test",
     "test": "mocha"
@@ -24,8 +26,11 @@
     "htmlparser2": "^3.9.2"
   },
   "devDependencies": {
+    "coveralls": "^2.11.15",
+    "eslint": "^3.14.1",
+    "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "mocha-eslint": "^3.0.1",
-    "eslint": "^3.14.1"
+    "mocha-lcov-reporter": "^1.2.0"
   }
 }
