@@ -1,5 +1,5 @@
 var css = require('css');
-var debug = require('debug')('css');
+var debug = require('debug')('css-bingo');
 var htmlparser = require('htmlparser2');
 
 module.exports = cssBingo;
