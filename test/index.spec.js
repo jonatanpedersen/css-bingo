@@ -6,7 +6,7 @@ describe('css-bingo', () => {
 	tests.forEach(test => {
 		it(test.description, () => {
 			const actual = cssBingo(test.css, test.html);
-			assert.equal(actual, test.expected, `${test.description}: ${test.actual} !== ${test.expected}`);
+			assert.equal(actual, test.expected, `${test.description}: ${actual} !== ${test.expected}`);
 		});
 	});
 });
