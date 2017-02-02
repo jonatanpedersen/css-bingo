@@ -1,0 +1,31 @@
+{
+  "name": "css-bingo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postversion": "git push && git push --tags",
+    "preversion": "npm test",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonatanpedersen/css-bingo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonatanpedersen/css-bingo/issues"
+  },
+  "homepage": "https://github.com/jonatanpedersen/css-bingo#readme",
+  "dependencies": {
+    "css": "^2.2.1",
+    "debug": "^2.6.0",
+    "htmlparser2": "^3.9.2"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.2",
+    "mocha-eslint": "^3.0.1",
+    "eslint": "^3.14.1"
+  }
+}
