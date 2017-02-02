@@ -27,7 +27,7 @@ console.log(cssBingo(css, html));
 ## Selectors
 
 ### Supported
-Will be removed if not used in the html.
+Rules with supported selectors will be removed when the selector is not found in the provided html.
 
 | Selector | Example |
 | --- | --- |
@@ -35,7 +35,7 @@ Will be removed if not used in the html.
 | [#id](http://www.w3schools.com/cssref/sel_id.asp) | #firstname |
 
 ### Unsupported
-Will not be removed.
+Rules with unsupported selectors will not be removed.
 
 | Selector | Example |
 | --- | --- |
