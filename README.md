@@ -1,5 +1,5 @@
 # css-bingo
-Removes unused rules from css by looking at used classes in html.
+Removes unused rules from css by looking at used classes and ids in html.
 
 [![Build Status](https://travis-ci.org/jonatanpedersen/css-bingo.svg?branch=master)](https://travis-ci.org/jonatanpedersen/css-bingo)
 [![NPM Version](https://img.shields.io/npm/v/css-bingo.svg)](https://www.npmjs.com/package/css-bingo)
