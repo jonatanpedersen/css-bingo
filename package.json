@@ -1,6 +1,6 @@
 {
   "name": "css-bingo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Removes unused rules from css by looking at used classes and ids in html.",
   "main": "index.js",
   "scripts": {
