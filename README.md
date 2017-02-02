@@ -14,7 +14,8 @@ $ npm install css-bingo
 ## Usage
 
 ``` javascript
-const cssBingo = require('css-bingo);
+const cssBingo = require('css-bingo');
+
 const css = '.foo{color:#fff;}.bar{color:#000;}';
 const html = '<br class="foo" />';
 
