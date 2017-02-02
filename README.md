@@ -24,6 +24,71 @@ console.log(cssBingo(css, html));
 // .foo{color:#fff;}
 ```
 
+## Selectors
+
+### Supported
+Will be removed if not used in the html.
+
+| Selector | Example |
+| --- | --- |
+| [.class](http://www.w3schools.com/cssref/sel_class.asp) | .intro |
+| [#id](http://www.w3schools.com/cssref/sel_id.asp) | #firstname |
+
+### Unsupported
+Will not be removed.
+
+| Selector | Example |
+| --- | --- |
+| [*](http://www.w3schools.com/cssref/sel_all.asp) | * |
+| [element](http://www.w3schools.com/cssref/sel_element.asp) | p |
+| [element,element](http://www.w3schools.com/cssref/sel_element_comma.asp) | div, p | [element element](http://www.w3schools.com/cssref/sel_element_element.asp) | div p |
+| [element>element](http://www.w3schools.com/cssref/sel_element_gt.asp) | div > p |
+| [element+element](http://www.w3schools.com/cssref/sel_element_pluss.asp) | div + p |
+| [element1~element2](http://www.w3schools.com/cssref/sel_gen_sibling.asp) | p ~ ul |
+| [[attribute]](http://www.w3schools.com/cssref/sel_attribute.asp) | [target] |
+| [[attribute=value]](http://www.w3schools.com/cssref/sel_attribute_value.asp) | [target=_blank] |
+| [[attribute~=value]](http://www.w3schools.com/cssref/sel_attribute_value_contains.asp) | [title~=flower] |
+| [[attribute\|=value]](http://www.w3schools.com/cssref/sel_attribute_value_lang.asp) | [lang|=en] |
+| [[attribute^=value]](http://www.w3schools.com/cssref/sel_attr_begin.asp) | a[href^="https"] |
+| [[attribute$=value]](http://www.w3schools.com/cssref/sel_attr_end.asp) | a[href$=".pdf"] |
+| [[attribute*=value]](http://www.w3schools.com/cssref/sel_attr_contain.asp) | a[href*="w3schools"] |
+| [:active](http://www.w3schools.com/cssref/sel_active.asp) | a:active |
+| [::after](http://www.w3schools.com/cssref/sel_after.asp) | p::after |
+| [::before](http://www.w3schools.com/cssref/sel_before.asp) | p::before |
+| [:checked](http://www.w3schools.com/cssref/sel_checked.asp) | input:checked |
+| [:disabled](http://www.w3schools.com/cssref/sel_disabled.asp) | input:disabled |
+| [:empty](http://www.w3schools.com/cssref/sel_empty.asp) | p:empty |
+| [:enabled](http://www.w3schools.com/cssref/sel_enabled.asp) | input:enabled |
+| [:first-child](http://www.w3schools.com/cssref/sel_firstchild.asp) | p:first-child |
+| [::first-letter](http://www.w3schools.com/cssref/sel_firstletter.asp) | p::first-letter |
+| [::first-line](http://www.w3schools.com/cssref/sel_firstline.asp) | p::first-line |
+| [:first-of-type](http://www.w3schools.com/cssref/sel_first-of-type.asp) | p:first-of-type |
+| [:focus](http://www.w3schools.com/cssref/sel_focus.asp) | input:focus |
+| [:hover](http://www.w3schools.com/cssref/sel_hover.asp) | a:hover |
+| [:in-range](http://www.w3schools.com/cssref/sel_in-range.asp) | input:in-range |
+| [:invalid](http://www.w3schools.com/cssref/sel_invalid.asp) | input:invalid |
+| [:lang(language)](http://www.w3schools.com/cssref/sel_lang.asp) | p:lang(it) |
+| [:last-child](http://www.w3schools.com/cssref/sel_last-child.asp) | p:last-child |
+| [:last-of-type](http://www.w3schools.com/cssref/sel_last-of-type.asp) | p:last-of-type |
+| [:link](http://www.w3schools.com/cssref/sel_link.asp) | a:link |
+| [:not(selector)](http://www.w3schools.com/cssref/sel_not.asp) | :not(p) |
+| [:nth-child(n)](http://www.w3schools.com/cssref/sel_nth-child.asp) | p:nth-child(2) |
+| [:nth-last-child(n)](http://www.w3schools.com/cssref/sel_nth-last-child.asp) | p:nth-last-child(2) |
+| [:nth-last-of-type(n)](http://www.w3schools.com/cssref/sel_nth-last-of-type.asp) | p:nth-last-of-type(2) |
+| [:nth-of-type(n)](http://www.w3schools.com/cssref/sel_nth-of-type.asp) | p:nth-of-type(2) |
+| [:only-of-type](http://www.w3schools.com/cssref/sel_only-of-type.asp) | p:only-of-type |
+| [:only-child](http://www.w3schools.com/cssref/sel_only-child.asp) | p:only-child |
+| [:optional](http://www.w3schools.com/cssref/sel_optional.asp) | input:optional |
+| [:out-of-range](http://www.w3schools.com/cssref/sel_out-of-range.asp) | input:out-of-range |
+| [:read-only](http://www.w3schools.com/cssref/sel_read-only.asp) | input:read-only |
+| [:read-write](http://www.w3schools.com/cssref/sel_read-write.asp) | input:read-write |
+| [:required](http://www.w3schools.com/cssref/sel_required.asp) | input:required |
+| [:root](http://www.w3schools.com/cssref/sel_root.asp) | :root |
+| [::selection](http://www.w3schools.com/cssref/sel_selection.asp) | ::selection |
+| [:target](http://www.w3schools.com/cssref/sel_target.asp) | #news:target |
+| [:valid](http://www.w3schools.com/cssref/sel_valid.asp) | input:valid |
+| [:visited](http://www.w3schools.com/cssref/sel_visited.asp) | a:visited |
+
 ## Licence
 The MIT License (MIT)
 
