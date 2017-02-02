@@ -5,6 +5,7 @@ Removes unused rules from css by looking at used classes and ids in html.
 [![NPM Version](https://img.shields.io/npm/v/css-bingo.svg)](https://www.npmjs.com/package/css-bingo)
 [![NSP Status](https://nodesecurity.io/orgs/jonatanpedersen/projects/efea09c6-afbc-4f30-ac78-f948c9b9928a/badge)](https://nodesecurity.io/orgs/jonatanpedersen/projects/efea09c6-afbc-4f30-ac78-f948c9b9928a)
 [![Greenkeeper badge](https://badges.greenkeeper.io/jonatanpedersen/css-bingo.svg)](https://greenkeeper.io/)
+[![Coverage Status](https://coveralls.io/repos/github/jonatanpedersen/css-bingo/badge.svg)](https://coveralls.io/github/jonatanpedersen/css-bingo)
 
 ## Install
 ``` bash
