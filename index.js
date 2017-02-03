@@ -43,7 +43,7 @@ function cssBingo (cssCode, htmlCode) {
 			switch (rule.type) {
 				case 'rule':
 					rule.selectors = rule.selectors.filter(selector => {
-						if (/^[\.#]?[^:>\s+~ ]+$/.test(selector)) {
+						if (/^[\.#]?[^:>\*\s+~ ]+$/.test(selector)) {
 							return knownSelectors.has(selector);
 						} else {
 							return true;

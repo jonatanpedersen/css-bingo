@@ -154,5 +154,11 @@
 		"css": ".heading-1{color:#000;}",
 		"html": "<html><body><h1 data-class=\"heading-1\">Foo</body></html>",
 		"expected": ".heading-1{color:#000;}"
+	},
+	{
+		"description": "keeps * element selector rules",
+		"css": "*{color:#000;}",
+		"html": "<html><body><h1 data-class=\"heading-1\">Foo</body></html>",
+		"expected": "*{color:#000;}"
 	}
 ]
