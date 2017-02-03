@@ -126,6 +126,18 @@
 		"expected": ".foo .bar{color:#eee;}"
 	},
 	{
+		"description": "keeps used .class.class selector rules",
+		"css": ".foo.bar{color:#eee;}",
+		"html": "<html><body><div class=\"foo bar\">foo bar</div></body></html>",
+		"expected": ".foo.bar{color:#eee;}"
+	},
+	{
+		"description": "keeps unused .class.class selector rules",
+		"css": ".foo.bar{color:#eee;}",
+		"html": "<html><body><div class=\"foo\"></div><div><span class=\"bar\">foo bar</span></div></body></html>",
+		"expected": ".foo.bar{color:#eee;}"
+	},
+	{
 		"description": "keeps used .class+.class selector rules",
 		"css": ".foo+.bar{color:#eee;}",
 		"html": "<html><body><div class=\"foo\"></div><span class=\"bar\">foo bar</span></body></html>",

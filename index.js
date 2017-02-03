@@ -12,7 +12,7 @@ function cssBingo (cssCode, htmlCode) {
 			knownSelectors.add(name);
 			
 			const id = attribs.id;
-			const classNames = [attribs['class'], attribs['data-class']].filter(Boolean).join(' ').split(' ');
+			const classNames = [attribs['class'], attribs['data-class']].filter(Boolean).join(' ').split(' ').filter(Boolean);
 
 			classNames.forEach(className => {
 				knownSelectors.add(`.${className}`);
@@ -43,7 +43,7 @@ function cssBingo (cssCode, htmlCode) {
 			switch (rule.type) {
 				case 'rule':
 					rule.selectors = rule.selectors.filter(selector => {
-						if (/^[\.#]?[^:>\*\s+~ ]+$/.test(selector)) {
+						if (/^(#?[^:>\*\s+~\.]*\.?[^:>\*\s+~\.]+)$/.test(selector)) {
 							return knownSelectors.has(selector);
 						} else {
 							return true;
