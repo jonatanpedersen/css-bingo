@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.2.0] - 2017-02-03
+### Fixed
+- Selector regex matching .class.class
+- Previous release version should have been been a minor bump
+
 ## [1.1.2] - 2017-02-03
 ### Added
 - Support for * element selector
