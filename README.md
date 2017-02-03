@@ -91,6 +91,17 @@ Rules with unsupported selectors will not be removed.
 | [:valid](http://www.w3schools.com/cssref/sel_valid.asp) | input:valid |
 | [:visited](http://www.w3schools.com/cssref/sel_visited.asp) | a:visited |
 
+### .class selectors
+css-bingo will look for class names in both the class and the data-class attribute.
+
+``` html
+<html>
+    <body>
+        <h1 class="foo" data-class="bar">Heading 1</h1>
+    </body>
+</html>
+```
+
 ## Performance
 1000 test runs on a 2.7 GHz Intel Core i5 MacBook Pro (early 2015) using unprocessed css and html from [debitoor](https://debitoor.com/).
 
