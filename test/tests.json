@@ -132,10 +132,22 @@
 		"expected": ".foo.bar{color:#eee;}"
 	},
 	{
-		"description": "keeps unused .class.class selector rules",
+		"description": "removes unused .class.class selector rules",
 		"css": ".foo.bar{color:#eee;}",
 		"html": "<html><body><div class=\"foo\"></div><div><span class=\"bar\">foo bar</span></div></body></html>",
-		"expected": ".foo.bar{color:#eee;}"
+		"expected": ""
+	},
+	{
+		"description": "keeps used .class.class.class.class element selector rules",
+		"css": ".foo.bar.baz.qux{color:#000;}",
+		"html": "<html><body><h1 class=\"foo bar baz qux\">foo bar baz qux</h1></body></html>",
+		"expected": ".foo.bar.baz.qux{color:#000;}"
+	},
+	{
+		"description": "removes unused .class.class.class.class element selector rules",
+		"css": ".foo.bar.baz.qux{color:#000;}",
+		"html": "<html><body><h1 class=\"bar baz\">foo bar baz</h1></body></html>",
+		"expected": ""
 	},
 	{
 		"description": "keeps used .class+.class selector rules",

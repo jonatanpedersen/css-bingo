@@ -8,11 +8,20 @@ function cssBingo (cssCode, htmlCode) {
 	const knownSelectors = new Set();
 
 	var parser = new htmlparser.Parser({
-		onopentag: function(name, attribs){
+		onopentag: (name, attribs) => {
 			knownSelectors.add(name);
 			
 			const id = attribs.id;
-			const classNames = [attribs['class'], attribs['data-class']].filter(Boolean).join(' ').split(' ').filter(Boolean);
+			const classNames = [attribs['class'], attribs['data-class']].filter(Boolean).join(' ').split(' ').filter(Boolean).sort();
+			
+			// .class.class
+			const classNamesLength = classNames.length;
+			
+			for (var i = 0; i < classNamesLength; i++) {
+				for (var j = i + 1; j < classNamesLength; j++) {
+					classNames.push(classNames.slice(i, j + 1).join('.'));
+				}
+			}
 
 			classNames.forEach(className => {
 				knownSelectors.add(`.${className}`);
@@ -27,11 +36,11 @@ function cssBingo (cssCode, htmlCode) {
 				knownSelectors.add(`#${id}`);
 			}
 		}
-	}, {decodeEntities: true});
+	});
 
 	parser.write(htmlCode);
 	parser.end();
-
+	
 	const ast = css.parse(cssCode);
 
 	walk(ast.stylesheet);
@@ -43,8 +52,9 @@ function cssBingo (cssCode, htmlCode) {
 			switch (rule.type) {
 				case 'rule':
 					rule.selectors = rule.selectors.filter(selector => {
-						if (/^(#?[^:>\*\s+~\.]*\.?[^:>\*\s+~\.]+)$/.test(selector)) {
-							return knownSelectors.has(selector);
+						if (/^[#\.]?[^:>\*\s+~]+$/.test(selector)) {
+							const sortedSelector = selector.split('.').sort().join('.');
+							return knownSelectors.has(sortedSelector);
 						} else {
 							return true;
 						}
