@@ -5,13 +5,26 @@ var htmlparser = require('htmlparser2');
 module.exports = cssBingo;
 
 function cssBingo (cssCode, htmlCode) {
-	const classSelectors = new Set();
-	const idSelectors = new Set();
+	const knownSelectors = new Set();
 
 	var parser = new htmlparser.Parser({
 		onopentag: function(name, attribs){
-			attribs.class && attribs.class.split(' ').map(className => `.${className}`).forEach(classSelector => classSelectors.add(classSelector));
-			attribs.id && idSelectors.add(`#${attribs.id}`);
+			knownSelectors.add(name);
+
+			if (attribs.class) {
+				attribs.class.split(' ').forEach(className => {
+					knownSelectors.add(`.${className}`);
+					knownSelectors.add(`${name}.${className}`);
+
+					if (attribs.id) {
+						knownSelectors.add(`#${attribs.id}.${className}`);
+					}
+				});
+			}
+
+			if (attribs.id) {
+				knownSelectors.add(`#${attribs.id}`);
+			}
 		}
 	}, {decodeEntities: true});
 
@@ -29,10 +42,8 @@ function cssBingo (cssCode, htmlCode) {
 			switch (rule.type) {
 				case 'rule':
 					rule.selectors = rule.selectors.filter(selector => {
-						if (/^\.[^\.:>\s]+$/.test(selector)) {
-							return classSelectors.has(selector);
-						} else if (/^\#[^\.:>\s]+$/.test(selector)) {
-							return idSelectors.has(selector);
+						if (/^[\.#]?[^:>\s+~ ]+$/.test(selector)) {
+							return knownSelectors.has(selector);
 						} else {
 							return true;
 						}

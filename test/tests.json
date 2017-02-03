@@ -1,50 +1,152 @@
 [
 	{
-		"description": "keeps used class selector rule",
+		"description": "keeps used element selectors",
+		"css": "p{color:#444;}",
+		"html": "<html><body><p>foo</p></body></html>",
+		"expected": "p{color:#444;}"
+	},
+	{
+		"description": "removes unused element selectors",
+		"css": "p{color:#444;}",
+		"html": "<html><body><h1>foo</h1></body></html>",
+		"expected": ""
+	},
+	{
+		"description": "keeps used .class selector rule",
 		"css": ".heading-1{color:#000;}",
 		"html": "<html><body><h1 class=\"heading-1\">Foo</body></html>",
 		"expected": ".heading-1{color:#000;}"
 	},
 	{
-		"description": "removes unused class selector rule",
+		"description": "removes unused .class selector rule",
 		"css": ".heading-1{color:#000;}",
 		"html": "<html><body><h1 class=\"heading-2\">Foo</body></html>",
 		"expected": ""
 	},
 	{
-		"description": "keeps used id selector rule",
+		"description": "keeps used element.class selector rule",
+		"css": "h1.heading-1{color:#000;}",
+		"html": "<html><body><h1 class=\"heading-1\">Foo</body></html>",
+		"expected": "h1.heading-1{color:#000;}"
+	},
+	{
+		"description": "removes unused element.class selector rule",
+		"css": "h1.heading-1{color:#000;}",
+		"html": "<html><body><h1 class=\"heading-2\">Foo</body></html>",
+		"expected": ""
+	},
+	{
+		"description": "keeps used #id selector rule",
 		"css": "#foo{color:#000;}",
 		"html": "<html><body><h1 id=\"foo\">foo</body></html>",
 		"expected": "#foo{color:#000;}"
 	},
 	{
-		"description": "removes unused id selector rule",
+		"description": "removes unused #id selector rule",
 		"css": "#foo{color:#000;}",
 		"html": "<html><body><h1 id=\"bar\">foo</body></html>",
 		"expected": ""
 	},
+	{	
+		"description": "keeps used #id.class selector rule",
+		"css": "#foo.black{color:#000;}",
+		"html": "<html><body><h1 id=\"foo\" class=\"black\">foo</body></html>",
+		"expected": "#foo.black{color:#000;}"
+	},
 	{
-		"description": "keeps used id selector rule inside media query",
+		"description": "removes unused #id selector rule",
+		"css": "#foo.black{color:#000;}",
+		"html": "<html><body><h1 id=\"foo\">foo</body></html>",
+		"expected": ""
+	},
+	{
+		"description": "keeps used #id selector rule inside media query",
 		"css": "@media (min-width:100){#foo{color:#000;}}",
 		"html": "<html><body><h1 id=\"foo\">foo</body></html>",
 		"expected": "@media (min-width:100){#foo{color:#000;}}"
 	},
 	{
-		"description": "removes unused id selector rule inside media query",
+		"description": "removes unused #id selector rule inside media query",
 		"css": "@media (min-width:100){#foo{color:#000;}}",
 		"html": "<html><body><h1 id=\"bar\">foo</body></html>",
 		"expected": ""
-	},
-	{
-		"description": "keeps element selectors",
-		"css": "p{color:#444;}",
-		"html": "<html><body><p>foo</p></body></html>",
-		"expected": "p{color:#444;}"
 	},
 	{
 		"description": "removes comments",
 		"css": "/*comment*/",
 		"html": "<html><body><p>foo</p></body></html>",
 		"expected": ""
+	},
+	{
+		"description": "keeps used element element selector rules",
+		"css": "div span{color:#eee;}",
+		"html": "<html><body><div><span>foo</span></div></body></html>",
+		"expected": "div span{color:#eee;}"
+	},
+	{
+		"description": "keeps unused element element selector rules",
+		"css": "div span{color:#eee;}",
+		"html": "<html><body><p>foo</p></body></html>",
+		"expected": "div span{color:#eee;}"
+	},
+	{
+		"description": "keeps used element+element selector rules",
+		"css": "div+span{color:#eee;}",
+		"html": "<html><body><div></div><span>foo</span></body></html>",
+		"expected": "div+span{color:#eee;}"
+	},
+	{
+		"description": "keeps unused element+element selector rules",
+		"css": "div+span{color:#eee;}",
+		"html": "<html><body><p>foo</p></body></html>",
+		"expected": "div+span{color:#eee;}"
+	},
+	{
+		"description": "keeps used element>element selector rules",
+		"css": "div+span{color:#eee;}",
+		"html": "<html><body><div><span>foo</span></div></body></html>",
+		"expected": "div+span{color:#eee;}"
+	},
+	{
+		"description": "keeps unused element>element selector rules",
+		"css": "div+span{color:#eee;}",
+		"html": "<html><body><p>foo</p></body></html>",
+		"expected": "div+span{color:#eee;}"
+	},
+	{
+		"description": "keeps used .class .class selector rules",
+		"css": ".foo .bar{color:#eee;}",
+		"html": "<html><body><div class=\"foo\"><div><span class=\"bar\">foo bar</span></div></div></body></html>",
+		"expected": ".foo .bar{color:#eee;}"
+	},
+	{
+		"description": "keeps unused .class .class selector rules",
+		"css": ".foo .bar{color:#eee;}",
+		"html": "<html><body><div class=\"foo\"></div><div><span class=\"bar\">foo bar</span></div></body></html>",
+		"expected": ".foo .bar{color:#eee;}"
+	},
+	{
+		"description": "keeps used .class+.class selector rules",
+		"css": ".foo+.bar{color:#eee;}",
+		"html": "<html><body><div class=\"foo\"></div><span class=\"bar\">foo bar</span></body></html>",
+		"expected": ".foo+.bar{color:#eee;}"
+	},
+	{
+		"description": "keeps unused .class+.class selector rules",
+		"css": ".foo+.bar{color:#eee;}",
+		"html": "<html><body><div class=\"foo\"></div><span class=\"baz\">foo baz</span></body></html>",
+		"expected": ".foo+.bar{color:#eee;}"
+	},
+	{
+		"description": "keeps used .class>.class selector rules",
+		"css": ".foo>.bar{color:#eee;}",
+		"html": "<html><body><div class=\"foo\"><span class=\"bar\">foo bar</span></div></body></html>",
+		"expected": ".foo>.bar{color:#eee;}"
+	},
+	{
+		"description": "keeps unused .class>.class selector rules",
+		"css": ".foo>.bar{color:#eee;}",
+		"html": "<html><body><div class=\"foo\"><div><span class=\"bar\">foo bar</span></div></div></body></html>",
+		"expected": ".foo>.bar{color:#eee;}"
 	}
 ]

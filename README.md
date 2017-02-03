@@ -33,6 +33,9 @@ Rules with supported selectors will be removed when the selector is not found in
 | --- | --- |
 | [.class](http://www.w3schools.com/cssref/sel_class.asp) | .intro |
 | [#id](http://www.w3schools.com/cssref/sel_id.asp) | #firstname |
+| [#id.class](http://www.w3schools.com/cssref/sel_id.asp) | #firstname.intro |
+| [element](http://www.w3schools.com/cssref/sel_element.asp) | p |
+| [element.class](http://www.w3schools.com/cssref/sel_element.asp) | p.intro |
 
 ### Unsupported
 Rules with unsupported selectors will not be removed.
@@ -40,7 +43,6 @@ Rules with unsupported selectors will not be removed.
 | Selector | Example |
 | --- | --- |
 | [*](http://www.w3schools.com/cssref/sel_all.asp) | * |
-| [element](http://www.w3schools.com/cssref/sel_element.asp) | p |
 | [element,element](http://www.w3schools.com/cssref/sel_element_comma.asp) | div, p | [element element](http://www.w3schools.com/cssref/sel_element_element.asp) | div p |
 | [element>element](http://www.w3schools.com/cssref/sel_element_gt.asp) | div > p |
 | [element+element](http://www.w3schools.com/cssref/sel_element_pluss.asp) | div + p |
