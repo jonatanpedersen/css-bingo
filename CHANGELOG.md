@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.3.0] - 2017-02-03
+### Added
+- Support for .class.class selectors
+
 ## [1.2.0] - 2017-02-03
 ### Fixed
 - Selector regex matching .class.class
