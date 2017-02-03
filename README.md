@@ -89,6 +89,14 @@ Rules with unsupported selectors will not be removed.
 | [:valid](http://www.w3schools.com/cssref/sel_valid.asp) | input:valid |
 | [:visited](http://www.w3schools.com/cssref/sel_visited.asp) | a:visited |
 
+## Performance
+1000 test runs on a 2.7 GHz Intel Core i5 MacBook Pro (early 2015) using unprocessed css and html from [debitoor](https://debitoor.com/).
+
+| Library | Duration |
+| --- | --- |
+| css-bingo | 20s 804.949056ms |
+| [purify-css](https://github.com/purifycss/purifycss) | 144s 248.650515ms |
+
 ## Licence
 The MIT License (MIT)
 
