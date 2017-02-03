@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.1.2] - 2017-02-03
+### Added
+- Support for * element selector
+
+## [1.1.1] - 2017-02-03
+### Removed
+- Unnecessary if statement
+
 ## [1.1.0] - 2017-02-03
 ### Added
 - Support element, element.class and id.class selectors
