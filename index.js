@@ -14,16 +14,14 @@ function cssBingo (cssCode, htmlCode) {
 			const id = attribs.id;
 			const classNames = [attribs['class'], attribs['data-class']].filter(Boolean).join(' ').split(' ');
 
-			if (classNames) {
-				classNames.forEach(className => {
-					knownSelectors.add(`.${className}`);
-					knownSelectors.add(`${name}.${className}`);
+			classNames.forEach(className => {
+				knownSelectors.add(`.${className}`);
+				knownSelectors.add(`${name}.${className}`);
 
-					if (id) {
-						knownSelectors.add(`#${id}.${className}`);
-					}
-				});
-			}
+				if (id) {
+					knownSelectors.add(`#${id}.${className}`);
+				}
+			});
 
 			if (id) {
 				knownSelectors.add(`#${id}`);
