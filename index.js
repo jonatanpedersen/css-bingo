@@ -10,20 +10,23 @@ function cssBingo (cssCode, htmlCode) {
 	var parser = new htmlparser.Parser({
 		onopentag: function(name, attribs){
 			knownSelectors.add(name);
+			
+			const id = attribs.id;
+			const classNames = [attribs['class'], attribs['data-class']].filter(Boolean).join(' ').split(' ');
 
-			if (attribs.class) {
-				attribs.class.split(' ').forEach(className => {
+			if (classNames) {
+				classNames.forEach(className => {
 					knownSelectors.add(`.${className}`);
 					knownSelectors.add(`${name}.${className}`);
 
-					if (attribs.id) {
-						knownSelectors.add(`#${attribs.id}.${className}`);
+					if (id) {
+						knownSelectors.add(`#${id}.${className}`);
 					}
 				});
 			}
 
-			if (attribs.id) {
-				knownSelectors.add(`#${attribs.id}`);
+			if (id) {
+				knownSelectors.add(`#${id}`);
 			}
 		}
 	}, {decodeEntities: true});
