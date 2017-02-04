@@ -1,4 +1,5 @@
 # css-bingo
+Give people a better user experoence on your website by pruning 
 Removes unused rules from css by looking at used classes and ids in html.
 
 [![Build Status](https://travis-ci.org/jonatanpedersen/css-bingo.svg?branch=master)](https://travis-ci.org/jonatanpedersen/css-bingo)
@@ -139,6 +140,58 @@ Pseudo Elements are ignored.
 | --- | --- |
 | css-bingo | 65s |
 | [purify-css](https://github.com/purifycss/purifycss) | 118s |
+
+## Background
+We are using css-bingo in [nocms](https://github.com/debitoor/nocms) that we use to build our static websites [@debitoor](https://debitoor.com).
+
+There are 5-10 people working on our websites at any given time during the work day and each of them submit pull-requests that are then built by our build agents. While pull requests can be built in parallel, merges to master can not. It is therefore important that we have a fast and stable build process. 
+
+I built css-bingo because none of the existing libraries that I could find had the accuracy and performance that we needed.
+
+## Contributing
+Pull-requests are welcome. Check the issue list for something to do, or submit your own ideas. Performance improvements and bugfixes are always welcome.
+
+Clone the repository:
+
+``` bash
+$ git clone git@github.com:jonatanpedersen/css-bingo.git
+```
+
+Install dependencies:
+
+``` bash
+$ npm install
+```
+
+### Test
+[mocha](https://github.com/mochajs/mocha) is used describe and run tests.
+
+Run Tests:
+``` bash
+$ npm test
+```
+
+Functional tests are described `./test/tests.json`.
+
+### Debugging
+[debug](https://github.com/visionmedia/debug) is used with the namespace `css-bingo`. 
+
+Enable debugging by setting the DEBUG environment variable `DEBUG=css-bingo`. 
+
+css-bingo will output debugging information for every rule it removes.
+
+### Coverage
+[istanbul](https://github.com/gotwarlost/istanbul) and [mocha](https://github.com/mochajs/mocha) are used to capture coverage data. 
+
+Run coverage:
+``` bash
+$ npm run cover
+```
+
+Coverage data is written to `./coverage/` and a html report is written to `./coverage/lcov-report/index.html`.
+
+### Continuous Integration
+All pull requests and commits are built for the latest versions of node 4, 5, 6 and 7 by [travis-ci](https://travis-ci.org/), and coverage is reported to [coveralls.io](https://travis-ci.org/).
 
 ## Licence
 The MIT License (MIT)
