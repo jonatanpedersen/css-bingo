@@ -1,6 +1,5 @@
 # css-bingo
-Give people a better user experoence on your website by pruning 
-Removes unused rules from css by looking at used classes and ids in html.
+Every tick counts when creating good user epxeriences for mobile devices and slow networks. Don't let the browser do unnecessary work. css-bingo finds all extraneous rules in your CSS not used by your html and removes them.
 
 [![Build Status](https://travis-ci.org/jonatanpedersen/css-bingo.svg?branch=master)](https://travis-ci.org/jonatanpedersen/css-bingo)
 [![NPM Version](https://img.shields.io/npm/v/css-bingo.svg)](https://www.npmjs.com/package/css-bingo)
