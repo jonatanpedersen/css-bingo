@@ -55,7 +55,7 @@ class names in both the class and the data-class attribute of html elements will
 ```
 
 ### Unsupported
-Selector attributes, pseudo-classes and pseudo-elements are not supported.
+The attributes, pseudo-classes and pseudo-elements of selectors are ignored when matching elements to selectors.
 
 | Selector | Example |
 | --- | --- |
@@ -108,8 +108,8 @@ Selector attributes, pseudo-classes and pseudo-elements are not supported.
 
 | Library | Duration |
 | --- | --- |
-| css-bingo | 21s|
-| [purify-css](https://github.com/purifycss/purifycss) | 149s|
+| css-bingo | 65s |
+| [purify-css](https://github.com/purifycss/purifycss) | 118s |
 
 ## Licence
 The MIT License (MIT)
