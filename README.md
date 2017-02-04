@@ -31,13 +31,18 @@ Rules with supported selectors will be removed when the selector is not found in
 
 | Selector | Example |
 | --- | --- |
+| [*](http://www.w3schools.com/cssref/sel_all.asp) | * |
 | [.class](http://www.w3schools.com/cssref/sel_class.asp) | .foo |
 | [.class.class](http://www.w3schools.com/cssref/sel_class.asp) | .foo.bar |
 | [#id](http://www.w3schools.com/cssref/sel_id.asp) | #baz |
 | [#id.class](http://www.w3schools.com/cssref/sel_id.asp) | #baz.foo |
 | [element](http://www.w3schools.com/cssref/sel_element.asp) | p |
 | [element.class](http://www.w3schools.com/cssref/sel_element.asp) | p.foo |
-| [element,element](http://www.w3schools.com/cssref/sel_element_comma.asp) | div, p | [element element](http://www.w3schools.com/cssref/sel_element_element.asp) | div p |
+| [element,element](http://www.w3schools.com/cssref/sel_element_comma.asp) | div, p | 
+| [element element](http://www.w3schools.com/cssref/sel_element_element.asp) | div p |
+| [element>element](http://www.w3schools.com/cssref/sel_element_gt.asp) | div > p |
+| [element+element](http://www.w3schools.com/cssref/sel_element_pluss.asp) | div + p |
+| [element~element](http://www.w3schools.com/cssref/sel_gen_sibling.asp) | p ~ ul |
 
 class names in both the class and the data-class attribute of html elements will be used.
 
@@ -50,14 +55,10 @@ class names in both the class and the data-class attribute of html elements will
 ```
 
 ### Unsupported
-Rules with unsupported selectors will not be removed.
+Selector attributes, pseudo-classes and pseudo-elements are not supported.
 
 | Selector | Example |
 | --- | --- |
-| [*](http://www.w3schools.com/cssref/sel_all.asp) | * |
-| [element>element](http://www.w3schools.com/cssref/sel_element_gt.asp) | div > p |
-| [element+element](http://www.w3schools.com/cssref/sel_element_pluss.asp) | div + p |
-| [element1~element2](http://www.w3schools.com/cssref/sel_gen_sibling.asp) | p ~ ul |
 | [[attribute]](http://www.w3schools.com/cssref/sel_attribute.asp) | [target] |
 | [[attribute=value]](http://www.w3schools.com/cssref/sel_attribute_value.asp) | [target=_blank] |
 | [[attribute~=value]](http://www.w3schools.com/cssref/sel_attribute_value_contains.asp) | [title~=flower] |
