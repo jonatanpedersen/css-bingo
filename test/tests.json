@@ -264,7 +264,7 @@
     },
     {
         "description": "removes matched rule when there are other unmatched rules before it",
-        "css": ".foo{color:red;}.qux{color:red;}",
+        "css": ".baz{color:red;}.foo{color:red;}.qux{color:red;}",
         "html": "<html><body><div class=\"qux\"></div></body></html>",
         "expected": ".qux{color:red;}"
     }
