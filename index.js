@@ -55,8 +55,8 @@ function getSelectorRulesFromCssAst(cssAst) {
 }
 
 function matchSelectorsInHtml (selectorRules, htmlCode) {
-	let levelIdx = -1;
-	let levels = [];
+	var levelIdx = -1;
+	var levels = [];
 
 	const matchedSelectors = new Set();
 	const unmatchedSelectors = new Set();
