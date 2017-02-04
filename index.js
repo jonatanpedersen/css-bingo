@@ -57,11 +57,11 @@ function filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode) {
 	let levelIdx = -1;
 	let levels = [];
 
-	const matchedSelectors = [];
+	const matchedSelectors = new Set();
 
 	for (var x = 0; x < selectorRules.length; x++) {
 		if (selectorRules[x].matched === true) {
-			matchedSelectors.push(selectorRules[x].selector);
+			matchedSelectors.add(selectorRules[x].selector);
 		}
 	}
 
@@ -76,16 +76,13 @@ function filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode) {
 				name: name,
 				id: attrs.id,
 				attrs: attrs,
-				classNames: [attrs['class'], attrs['data-class']]
-					.join(' ')
-					.split(' ')
-					.filter(Boolean)
+				classNames: new Set([attrs['class'], attrs['data-class']].join(' ').split(' ').filter(Boolean))
 			};
 
 			for (var i = 0; i < selectorRules.length; i++) {
 				const selectorRule = selectorRules[i];
 				
-				if (matchedSelectors.indexOf(selectorRule.selector) === -1) {
+				if (!matchedSelectors.has(selectorRule.selector)) {
 					levelSelectorRules.push({
 						rule: selectorRule.rule,
 						selector: selectorRule.selector
@@ -105,7 +102,7 @@ function filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode) {
 							selector: levelSelectorRule.selector
 						});
 					} else {
-						matchedSelectors.push(levelSelectorRule.selector);
+						matchedSelectors.add(levelSelectorRule.selector);
 					}
 				}
 			}
@@ -113,7 +110,7 @@ function filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode) {
 			function match (element, rule) {
 				const id = (!rule.id || (rule.id === element.id));
 				const name = (!rule.tagName || (rule.tagName === '*' || rule.tagName === element.name));
-				const classNames = (!rule.classNames || (rule.classNames.filter(ruleClassName => element.classNames.indexOf(ruleClassName) > -1).length === rule.classNames.length));
+				const classNames = (!rule.classNames || (rule.classNames.filter(ruleClassName => element.classNames.has(ruleClassName)).length === rule.classNames.length));
 
 				return id && name && classNames;
 			}
@@ -139,7 +136,7 @@ function filterSelectorsFromCssAst (cssAst, selectors) {
 	function walk (node) {
 		node.rules = node.rules.reduce((rules, rule) => {
 			if (rule.type === 'rule') {
-				rule.selectors = rule.selectors.filter(selector => selectors.indexOf(selector) > -1);
+				rule.selectors = rule.selectors.filter(selector => selectors.has(selector));
 
 				if (rule.selectors.length > 0) {
 					rules.push(rule);
