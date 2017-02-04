@@ -7,7 +7,7 @@ module.exports = cssBingo;
 function cssBingo (cssCode, htmlCode) {
 	const cssAst = css.parse(cssCode);
 	const selectorRules = getSelectorRulesFromCssAst(cssAst);
-	const matchedSelectors = filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode);
+	const matchedSelectors = matchSelectorsInHtml (selectorRules, htmlCode);
 	const newCssAst = filterSelectorsFromCssAst(cssAst, matchedSelectors);
 
 	return css.stringify(newCssAst, {compress:true});
@@ -18,8 +18,8 @@ function getSelectorRulesFromCssAst(cssAst) {
 	cssSelectorParser.registerSelectorPseudos('has');
 	cssSelectorParser.registerNestingOperators('>', '+', '~');
 	cssSelectorParser.registerAttrEqualityMods('^', '$', '*', '~');
-	cssSelectorParser.enableSubstitutes();
 	
+	const selectors = new Set();
 	const selectorRules = [];
 
 	walk(cssAst.stylesheet);
@@ -37,14 +37,15 @@ function getSelectorRulesFromCssAst(cssAst) {
 			if (rule.type === 'rule' && rule.selectors) {
 				for (var i = 0; i < rule.selectors.length; i++) {
 					const selector = rule.selectors[i];
-					const ruleAst = cssSelectorParser.parse(selector).rule;
-					const matched = ruleAst.nestingOperator !== undefined || ruleAst.rule && ruleAst.rule.nestingOperator !== undefined;
+					
+					if (!selectors.has(selector)) {
+						selectorRules.push({
+							selector: selector,
+							rule: cssSelectorParser.parse(selector).rule
+						});
 
-					selectorRules.push({
-						selector: selector,
-						rule: ruleAst,
-						matched: matched
-					});
+						selectors.add(selector);
+					}
 				}
 			} else if (rule.type === 'media') {
 				walk(rule);
@@ -53,15 +54,20 @@ function getSelectorRulesFromCssAst(cssAst) {
 	}
 }
 
-function filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode) {
+function matchSelectorsInHtml (selectorRules, htmlCode) {
 	let levelIdx = -1;
 	let levels = [];
 
 	const matchedSelectors = new Set();
+	const unmatchedSelectorRules = [];
 
 	for (var x = 0; x < selectorRules.length; x++) {
-		if (selectorRules[x].matched === true) {
-			matchedSelectors.add(selectorRules[x].selector);
+		const selectorRule = selectorRules[x];
+		
+		if (selectorRule.rule.nestingOperator !== undefined || selectorRule.rule.rule && selectorRule.rule.rule.nestingOperator !== undefined) {
+			matchedSelectors.add(selectorRule.selector);
+		} else {
+			unmatchedSelectorRules.push(selectorRule);
 		}
 	}
 
@@ -79,20 +85,18 @@ function filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode) {
 				classNames: new Set([attrs['class'], attrs['data-class']].join(' ').split(' ').filter(Boolean))
 			};
 
-			for (var i = 0; i < selectorRules.length; i++) {
-				const selectorRule = selectorRules[i];
+			for (var i = 0; i < unmatchedSelectorRules.length; i++) {
+				const selectorRule = unmatchedSelectorRules[i];
 				
-				if (!matchedSelectors.has(selectorRule.selector)) {
-					levelSelectorRules.push({
-						rule: selectorRule.rule,
-						selector: selectorRule.selector
-					});
-				}
+				levelSelectorRules.push({
+					rule: selectorRule.rule,
+					selector: selectorRule.selector
+				});
 			}
 
 			for (var j = 0; j < levelSelectorRules.length; j++) {
 				const levelSelectorRule = levelSelectorRules[j];
-			
+				
 				levelSelectorRule.matched = match(element, levelSelectorRule.rule);
 
 				if (levelSelectorRule.matched) {
@@ -102,7 +106,12 @@ function filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode) {
 							selector: levelSelectorRule.selector
 						});
 					} else {
-						matchedSelectors.add(levelSelectorRule.selector);
+						const indexOfUnmatchedSelectorRule = unmatchedSelectorRules.indexOf(levelSelectorRule.selector);
+						
+						if (indexOfUnmatchedSelectorRule > -1) {
+							unmatchedSelectorRules.splice(indexOfUnmatchedSelectorRule, 1);
+							matchedSelectors.add(levelSelectorRule.selector);
+						}
 					}
 				}
 			}
