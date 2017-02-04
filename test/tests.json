@@ -1,71 +1,71 @@
 [{
-        "description": "keeps used element selector rules",
+        "description": "keeps matched element selector rules",
         "css": "p{color:#444;}",
         "html": "<html><body><p>foo</p></body></html>",
         "expected": "p{color:#444;}"
     },
     {
-        "description": "removes unused element selector rules",
+        "description": "removes unmatched element selector rules",
         "css": "p{color:#444;}",
         "html": "<html><body><h1>foo</h1></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used .class selector rules",
+        "description": "keeps matched .class selector rules",
         "css": ".heading-1{color:#000;}",
         "html": "<html><body><h1 class=\"heading-1\">Foo</body></html>",
         "expected": ".heading-1{color:#000;}"
     },
     {
-        "description": "removes unused .class selector rules",
+        "description": "removes unmatched .class selector rules",
         "css": ".heading-1{color:#000;}",
         "html": "<html><body><h1 class=\"heading-2\">Foo</body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used element.class selector rules",
+        "description": "keeps matched element.class selector rules",
         "css": "h1.heading-1{color:#000;}",
         "html": "<html><body><h1 class=\"heading-1\">Foo</body></html>",
         "expected": "h1.heading-1{color:#000;}"
     },
     {
-        "description": "removes unused element.class selector rules",
+        "description": "removes unmatched element.class selector rules",
         "css": "h1.heading-1{color:#000;}",
         "html": "<html><body><h1 class=\"heading-2\">Foo</body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used #id selector rules",
+        "description": "keeps matched #id selector rules",
         "css": "#foo{color:#000;}",
         "html": "<html><body><h1 id=\"foo\">foo</body></html>",
         "expected": "#foo{color:#000;}"
     },
     {
-        "description": "removes unused #id selector rules",
+        "description": "removes unmatched #id selector rules",
         "css": "#foo{color:#000;}",
         "html": "<html><body><h1 id=\"bar\">foo</body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used #id.class selector rules",
+        "description": "keeps matched #id.class selector rules",
         "css": "#foo.black{color:#000;}",
         "html": "<html><body><h1 id=\"foo\" class=\"black\">foo</body></html>",
         "expected": "#foo.black{color:#000;}"
     },
     {
-        "description": "removes unused #id selector rules",
+        "description": "removes unmatched #id selector rules",
         "css": "#foo.black{color:#000;}",
         "html": "<html><body><h1 id=\"foo\">foo</body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used #id selector rule inside media query",
+        "description": "keeps matched #id selector rule inside media query",
         "css": "@media (min-width:100){#foo{color:#000;}}",
         "html": "<html><body><h1 id=\"foo\">foo</body></html>",
         "expected": "@media (min-width:100){#foo{color:#000;}}"
     },
     {
-        "description": "removes unused #id selector rule inside media query",
+        "description": "removes unmatched #id selector rule inside media query",
         "css": "@media (min-width:100){#foo{color:#000;}}",
         "html": "<html><body><h1 id=\"bar\">foo</body></html>",
         "expected": ""
@@ -77,103 +77,115 @@
         "expected": ""
     },
     {
-        "description": "keeps used element element selector rules",
+        "description": "keeps matched element element selector rules",
         "css": "div span{color:#eee;}",
         "html": "<html><body><div><span>foo</span></div></body></html>",
         "expected": "div span{color:#eee;}"
     },
     {
-        "description": "removes unused element element selector rules",
+        "description": "removes unmatched element element selector rules",
         "css": "div span{color:#eee;}",
         "html": "<html><body><p>foo</p></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used element + element selector rules",
+        "description": "keeps matched element + element selector rules",
         "css": "div+span{color:#eee;}",
         "html": "<html><body><div></div><span>foo</span></body></html>",
         "expected": "div+span{color:#eee;}"
     },
     {
-        "description": "removes unused element + element selector rules",
+        "description": "removes unmatched element + element selector rules",
         "css": "div+span{color:#eee;}",
         "html": "<html><body><p>foo</p></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used element > element selector rules",
+        "description": "keeps matched element > element selector rules",
         "css": "div>span{color:#eee;}",
         "html": "<html><body><div><span>foo</span></div></body></html>",
         "expected": "div>span{color:#eee;}"
     },
     {
-        "description": "removes unused element > element selector rules",
+        "description": "removes unmatched element > element selector rules",
         "css": "div>span{color:#eee;}",
         "html": "<html><body><p>foo</p></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used .class .class selector rules",
+        "description": "keeps matched .class .class selector rules",
         "css": ".foo .bar{color:#eee;}",
         "html": "<html><body><div class=\"foo\"><div><span class=\"bar\">foo bar</span></div></div></body></html>",
         "expected": ".foo .bar{color:#eee;}"
     },
     {
-        "description": "removes unused .class .class selector rules",
+        "description": "removes unmatched .class .class selector rules",
         "css": ".foo .bar{color:#eee;}",
         "html": "<html><body><div class=\"foo\"><div><span class=\"baz\">foo baz</span></div></div></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used .class.class selector rules",
+        "description": "keeps matched .class.class selector rules",
         "css": ".foo.bar{color:#eee;}",
         "html": "<html><body><div class=\"foo bar\">foo bar</div></body></html>",
         "expected": ".foo.bar{color:#eee;}"
     },
     {
-        "description": "removes unused .class.class selector rules",
+        "description": "removes unmatched .class.class selector rules",
         "css": ".foo.bar{color:#eee;}",
         "html": "<html><body><div class=\"foo\"></div><div><span class=\"bar\">foo bar</span></div></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used .class.class.class.class element selector rules",
+        "description": "keeps matched .class.class.class.class element selector rules",
         "css": ".foo.bar.baz.qux{color:#000;}",
         "html": "<html><body><h1 class=\"foo bar baz qux\">foo bar baz qux</h1></body></html>",
         "expected": ".foo.bar.baz.qux{color:#000;}"
     },
     {
-        "description": "removes unused .class.class.class.class element selector rules",
+        "description": "removes unmatched .class.class.class.class element selector rules",
         "css": ".foo.bar.baz.qux{color:#000;}",
         "html": "<html><body><h1 class=\"bar baz\">foo bar baz</h1></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used .class + .class selector rules",
+        "description": "keeps matched .class + .class selector rules",
         "css": ".foo+.bar{color:#eee;}",
         "html": "<html><body><div class=\"foo\"></div><span class=\"bar\">foo bar</span></body></html>",
         "expected": ".foo+.bar{color:#eee;}"
     },
     {
-        "description": "removes unused .class + .class selector rules",
+        "description": "removes unmatched .class + .class selector rules",
         "css": ".foo+.bar{color:#eee;}",
         "html": "<html><body><div class=\"foo\"></div><span class=\"baz\">foo baz</span></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used .class > .class selector rules",
+        "description": "keeps matched .class ~ .class selector rules",
+        "css": ".foo~.bar{color:#eee;}",
+        "html": "<html><body><div class=\"foo\"></div><span class=\"baz\">baz</span><span class=\"bar\">bar</span></body></html>",
+        "expected": ".foo~.bar{color:#eee;}"
+    },
+    {
+        "description": "removes unmatched .class ~ .class selector rules",
+        "css": ".foo~.bar{color:#eee;}",
+        "html": "<html><body><div class=\"foo\"></div><span class=\"baz\">foo baz</span></body></html>",
+        "expected": ""
+    },
+    {
+        "description": "keeps matched .class > .class selector rules",
         "css": ".foo>.bar{color:#eee;}",
         "html": "<html><body><div class=\"foo\"><span class=\"bar\">foo bar</span></div></body></html>",
         "expected": ".foo>.bar{color:#eee;}"
     },
     {
-        "description": "removes unused .class > .class selector rules",
+        "description": "removes unmatched .class > .class selector rules",
         "css": ".foo>.bar{color:#eee;}",
         "html": "<html><body><div class=\"foo\"><div><span class=\"bar\">foo bar</span></div></div></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used data-class .class selector rules",
+        "description": "keeps matched data-class .class selector rules",
         "css": ".heading-1{color:#000;}",
         "html": "<html><body><h1 data-class=\"heading-1\">Foo</body></html>",
         "expected": ".heading-1{color:#000;}"
@@ -185,51 +197,75 @@
         "expected": "*{color:#000;}"
     },
     {
-        "description": "keeps used element:pseudo-class selector rules",
+        "description": "keeps matched element:pseudo-class selector rules",
         "css": "a:hover{color:#000;}",
         "html": "<html><body><a>foo</a></body></html>",
         "expected": "a:hover{color:#000;}"
     },
     {
-        "description": "removes unused element:pseudo-class selector rules",
+        "description": "removes unmatched element:pseudo-class selector rules",
         "css": "a:hover{color:#000;}",
         "html": "<html><body><br/></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used element::pseudo-element selector rules",
+        "description": "keeps matched element::pseudo-element selector rules",
         "css": "a::first-line{color:#000;}",
         "html": "<html><body><a>foo</a></body></html>",
         "expected": "a::first-line{color:#000;}"
     },
     {
-        "description": "removes unused element::pseudo-element selector rules",
+        "description": "removes unmatched element::pseudo-element selector rules",
         "css": "a::first-line{color:#000;}",
         "html": "<html><body><br/></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used .class:pseudo-class selector rules",
+        "description": "keeps matched .class:pseudo-class selector rules",
         "css": ".foo:hover{color:#000;}",
         "html": "<html><body><a class=\"foo\">foo</a></body></html>",
         "expected": ".foo:hover{color:#000;}"
     },
     {
-        "description": "removes unused .class:pseudo-class selector rules",
+        "description": "removes unmatched .class:pseudo-class selector rules",
         "css": ".foo:hover{color:#000;}",
         "html": "<html><body><br class=\"bar\" /></body></html>",
         "expected": ""
     },
     {
-        "description": "keeps used class::pseudo-element selector rules",
+        "description": "keeps matched class::pseudo-element selector rules",
         "css": ".foo::first-line{color:#000;}",
         "html": "<html><body><a class=\"foo\">foo</a></body></html>",
         "expected": ".foo::first-line{color:#000;}"
     },
     {
-        "description": "removes unused class::pseudo-element selector rules",
-        "css": ".foo::first-line{color:#000;}",
+        "description": "removes unmatched class::pseudo-element selector rules",
+        "css": ".baz{color:#fff;}.foo::first-line{color:#000;}.qux{color:#fff;}.dax{color:#fff;}",
         "html": "<html><body><a class=\"bar\">foo</a></body></html>",
         "expected": ""
+    },
+    {
+        "description": "keeps matched attributes selector rules",
+        "css": "input[type=text]{color:red;}",
+        "html": "<html><body><form><input type=\"text\" /></form></body></html>",
+        "expected": "input[type=text]{color:red;}"
+    },
+    {
+        "description": "keeps unmatched attributes selector rules (Can't do it yet)",
+        "css": "input[type=text]{color:red;}",
+        "html": "<html><body><form><input type=\"password\" /></form></body></html>",
+        "expected": "input[type=text]{color:red;}"
+    },
+    {
+        "description": "removes attributes selector rules when matching without the attributes",
+        "css": "input[type=text]{color:red;}",
+        "html": "<html><body><form></form></body></html>",
+        "expected": ""
+    },
+    {
+        "description": "removes matched rule when there are other unmatched rules before it",
+        "css": ".foo{color:red;}.qux{color:red;}",
+        "html": "<html><body><div class=\"qux\"></div></body></html>",
+        "expected": ".qux{color:red;}"
     }
 ]

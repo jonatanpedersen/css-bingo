@@ -28,10 +28,6 @@ function getSelectorRulesFromCssAst(cssAst) {
 	return selectorRules;
 
 	function walk(node) {
-		if (!node.rules) {
-			return;
-		}
-
 		for (var j = 0; j < node.rules.length; j++) {
 			const rule = node.rules[j];
 
@@ -39,14 +35,12 @@ function getSelectorRulesFromCssAst(cssAst) {
 				for (var i = 0; i < rule.selectors.length; i++) {
 					const selector = rule.selectors[i];
 
-					if (!selectors.has(selector)) {
-						selectorRules.push({
-							selector: selector,
-							rule: cssSelectorParser.parse(selector).rule
-						});
+					selectorRules.push({
+						selector: selector,
+						rule: cssSelectorParser.parse(selector).rule
+					});
 
-						selectors.add(selector);
-					}
+					selectors.add(selector);
 				}
 			} else if (rule.type === 'media') {
 				walk(rule);
@@ -65,14 +59,9 @@ function matchSelectorsInHtml(selectorRules, htmlCode) {
 
 	for (var x = 0; x < selectorRules.length; x++) {
 		const selectorRule = selectorRules[x];
-		const rule = selectorRule.rule;
 
-		if (rule.type === 'rule' && rule.attrs === undefined) {
-			unmatchedSelectors.add(selectorRule.selector);
-			unmatchedSelectorRules.push(selectorRule);
-		} else {
-			matchedSelectors.add(selectorRule.selector);
-		}
+		unmatchedSelectors.add(selectorRule.selector);
+		unmatchedSelectorRules.push(selectorRule);
 	}
 
 	const parser = new htmlparser.Parser({
@@ -120,7 +109,7 @@ function matchSelectorsInHtml(selectorRules, htmlCode) {
 
 						if (nestingOperator === null || nestingOperator === '>') {
 							nextLevelSelectorRules.push(newLevelSelectorRule);
-						} else if (nestingOperator === '+' || nestingOperator === '~') {
+						} else {
 							levelSelectorRules.push(newLevelSelectorRule);
 						}
 					} else {
