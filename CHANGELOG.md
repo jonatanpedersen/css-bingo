@@ -3,6 +3,7 @@
 ## [1.4.3] - 2017-02-04
 ### Added
 - Version 1.4.2 and 1.4.3 to CHANGELOG
+- Background and Contributing sections to README
 
 ## [1.4.2] - 2017-02-04
 ### Fixed
