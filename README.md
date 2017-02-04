@@ -174,11 +174,11 @@ $ npm test
 Functional tests are described `./test/tests.json`.
 
 ### Debugging
-[debug](https://github.com/visionmedia/debug) is used with the namespace `css-bingo`. 
+[debug](https://github.com/visionmedia/debug) is used with the namespace `css-bingo`. Enable debugging by setting the DEBUG environment variable `DEBUG=css-bingo`. 
 
-Enable debugging by setting the DEBUG environment variable `DEBUG=css-bingo`. 
-
-css-bingo will output debugging information for every rule it removes.
+``` bash
+Sat, 04 Feb 2017 22:24:42 GMT css-bingo removed rule: { type: 'rule', selectors: [], declarations: [ { type: 'declaration', property: 'color', value: 'red', position: Position { start: { line: 1, column: 22 }, end: { line: 1, column: 31 }, source: undefined } } ], position: Position { start: { line: 1, column: 17 }, end: { line: 1, column: 33 }, source: undefined } }
+```
 
 ### Coverage
 [istanbul](https://github.com/gotwarlost/istanbul) and [mocha](https://github.com/mochajs/mocha) are used to capture coverage data. 
