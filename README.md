@@ -110,17 +110,17 @@ Element Attributes are ignored.
 
 | css | html | output |
 |---|---|---|
-| "`input[type=text]{color:#c00;}`" | "`<input type="text"/>`" | "`input[type=text]{color:#c00;}`" |
-| "`input[type=text]{color:#c00;}`" | "`<input type="password"/>`" | "`input[type=text]{color:#c00;}`" |
-| "`input[type=text]{color:#c00;}`" | "`<button></button>`" | ""|
+| `input[type=text]{color:#c00;}` | `<input type="text"/>` | `input[type=text]{color:#c00;}` |
+| `input[type=text]{color:#c00;}` | `<input type="password"/>` | `input[type=text]{color:#c00;}` |
+| `input[type=text]{color:#c00;}` | `<button></button>` | |
 
 #### pseudo-classes
 Pseudo Classes are ignored.
 
 | css | html | output |
 |---|---|---|
-| "`button:hover{color:#c00;}`" | "`<button></button>`" | "`button:hover{color:#c00;}`" |
-| "`button:hover{color:#c00;}`" | "`<input />`" | "" |
+| `button:hover{color:#c00;}` | `<button></button>` | `button:hover{color:#c00;}` |
+| `button:hover{color:#c00;}` | `<input />` |  |
 
 
 #### pseudo-elements
@@ -128,9 +128,9 @@ Pseudo Elements are ignored.
 
 | css | html | output |
 |---|---|---|
-| "`p::first-letter{color:#c00;}`" | "`<p>foo bar</p>`" | "`p::first-letter{color:#c00;}`" |
-| "`p::first-letter{color:#c00;}`" | "`<p></p>`" | "`p::first-letter{color:#c00;}`" |
-| "`p::first-letter{color:#c00;}`" | "`<ul><li>foo></li><li>bar</li></ul>`" | "" |
+| `p::first-letter{color:#c00;}` | `<p>foo bar</p>` | `p::first-letter{color:#c00;}` |
+| `p::first-letter{color:#c00;}` | `<p></p>` | `p::first-letter{color:#c00;}` |
+| `p::first-letter{color:#c00;}` | `<ul><li>foo></li><li>bar</li></ul>` |  |
 
 ## Performance
 1000 test runs on a 2.7 GHz Intel Core i5 MacBook Pro (early 2015) using unprocessed css and html from [debitoor](https://debitoor.com/).
