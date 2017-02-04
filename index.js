@@ -37,7 +37,7 @@ function getSelectorRulesFromCssAst(cssAst) {
 
 					selectorRules.push({
 						selector: selector,
-						rule: cssSelectorParser.parse(selector)
+						rule: cssSelectorParser.parse(selector).rule
 					});
 				}
 			} else if (rule.type === 'media') {
