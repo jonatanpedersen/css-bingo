@@ -59,15 +59,17 @@ function matchSelectorsInHtml (selectorRules, htmlCode) {
 	let levels = [];
 
 	const matchedSelectors = new Set();
+	const unmatchedSelectors = new Set();
 	const unmatchedSelectorRules = [];
 
 	for (var x = 0; x < selectorRules.length; x++) {
 		const selectorRule = selectorRules[x];
 		
-		if (selectorRule.rule.nestingOperator !== undefined || selectorRule.rule.rule && selectorRule.rule.rule.nestingOperator !== undefined) {
-			matchedSelectors.add(selectorRule.selector);
-		} else {
+		if (selectorRule.rule.type === 'rule' && selectorRule.rule.rule === undefined && selectorRule.rule.attrs === undefined && selectorRule.rule.pseudos === undefined) {
+			unmatchedSelectors.add(selectorRule.selector);
 			unmatchedSelectorRules.push(selectorRule);
+		} else {
+			matchedSelectors.add(selectorRule.selector);
 		}
 	}
 
@@ -106,11 +108,13 @@ function matchSelectorsInHtml (selectorRules, htmlCode) {
 							selector: levelSelectorRule.selector
 						});
 					} else {
-						const indexOfUnmatchedSelectorRule = unmatchedSelectorRules.indexOf(levelSelectorRule.selector);
-						
-						if (indexOfUnmatchedSelectorRule > -1) {
-							unmatchedSelectorRules.splice(indexOfUnmatchedSelectorRule, 1);
-							matchedSelectors.add(levelSelectorRule.selector);
+						for (var y = 0; y < unmatchedSelectorRules.length; y++) {
+							if (unmatchedSelectorRules[y].selector === levelSelectorRule.selector) {
+								unmatchedSelectorRules.splice(y, 1);
+								matchedSelectors.add(levelSelectorRule.selector);
+								unmatchedSelectors.delete(levelSelectorRule.selector);
+								break;
+							}
 						}
 					}
 				}
@@ -134,7 +138,7 @@ function matchSelectorsInHtml (selectorRules, htmlCode) {
 	parser.write(htmlCode);
 	parser.end();
 
-	return matchedSelectors;
+	return unmatchedSelectors;
 }
 
 function filterSelectorsFromCssAst (cssAst, selectors) {
@@ -145,7 +149,7 @@ function filterSelectorsFromCssAst (cssAst, selectors) {
 	function walk (node) {
 		node.rules = node.rules.reduce((rules, rule) => {
 			if (rule.type === 'rule') {
-				rule.selectors = rule.selectors.filter(selector => selectors.has(selector));
+				rule.selectors = rule.selectors.filter(selector => !selectors.has(selector));
 
 				if (rule.selectors.length > 0) {
 					rules.push(rule);
