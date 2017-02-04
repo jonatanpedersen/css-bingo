@@ -6,133 +6,140 @@ module.exports = cssBingo;
 
 function cssBingo (cssCode, htmlCode) {
 	const cssAst = css.parse(cssCode);
-	const selectors = getSelectorsFromCssAst(cssAst);
-	const usedSelectors = filterSelectorsNotUsedInHtmlCode (selectors, htmlCode);
-	const newCssAst = filterSelectorsFromCssAst(cssAst, usedSelectors);
+	const selectorRules = getSelectorRulesFromCssAst(cssAst);
+	const matchedSelectors = filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode);
+	const newCssAst = filterSelectorsFromCssAst(cssAst, matchedSelectors);
 
 	return css.stringify(newCssAst, {compress:true});
 }
 
-function getSelectorsFromCssAst(cssAst) {
-	const selectors = new Set();
-
-	walk(cssAst.stylesheet);
-
-	return selectors;
-
-	function walk (node) {
-		node.rules && node.rules.forEach(rule => {
-			if (rule.type === 'rule') {
-				rule.selectors && rule.selectors.forEach(selector => selectors.add(selector));
-			} else if (rule.rules) {
-				walk(rule);
-			}
-		});
-	}
-}
-
-function filterSelectorsNotUsedInHtmlCode (selectors, htmlCode) {
+function getSelectorRulesFromCssAst(cssAst) {
 	const cssSelectorParser = new CssSelectorParser();
 	cssSelectorParser.registerSelectorPseudos('has');
-	cssSelectorParser.registerNestingOperators(' ', '>', '+', '~');
+	cssSelectorParser.registerNestingOperators('>', '+', '~');
 	cssSelectorParser.registerAttrEqualityMods('^', '$', '*', '~');
 	cssSelectorParser.enableSubstitutes();
 	
-	const selectorRuleMap = {};
+	const selectorRules = [];
 
-	selectors.forEach((selector) => {
-		selectorRuleMap[selector] = cssSelectorParser.parse(selector).rule;
-	});
+	walk(cssAst.stylesheet);
 
-	const unknownSelectors = new Set([...selectors]);
-	const knownSelectors = new Set();
+	return selectorRules;
 
-	selectors.forEach(selector => {
-		const rule = selectorRuleMap[selector];
-
-		if (rule.nestingOperator || rule.rule && rule.rule.nestingOperator !== undefined) {
-			unknownSelectors.delete(selector);
-			knownSelectors.add(selector);
-
+	function walk (node) {
+		if (!node.rules) {
 			return;
 		}
-	});
 
+		for (var j = 0; j < node.rules.length; j++) {
+			const rule = node.rules[j];
+
+			if (rule.type === 'rule' && rule.selectors) {
+				for (var i = 0; i < rule.selectors.length; i++) {
+					const selector = rule.selectors[i];
+					const ruleAst = cssSelectorParser.parse(selector).rule;
+					const matched = ruleAst.nestingOperator !== undefined || ruleAst.rule && ruleAst.rule.nestingOperator !== undefined;
+
+					selectorRules.push({
+						selector: selector,
+						rule: ruleAst,
+						matched: matched
+					});
+				}
+			} else if (rule.type === 'media') {
+				walk(rule);
+			}
+		}
+	}
+}
+
+function filterSelectorsNotUsedInHtmlCode (selectorRules, htmlCode) {
 	let levelIdx = -1;
 	let levels = [];
+
+	const matchedSelectors = [];
+
+	for (var x = 0; x < selectorRules.length; x++) {
+		if (selectorRules[x].matched === true) {
+			matchedSelectors.push(selectorRules[x].selector);
+		}
+	}
 
 	const parser = new htmlparser.Parser({
 		onopentag: (name, attrs) => {
 			levelIdx++;
 
-			const levelSelectorRules = levels[levelIdx] = levels[levelIdx] || new Set();
-			const nextLevelSelectorRules = levels[levelIdx + 1] = levels[levelIdx + 1] || new Set();
+			const levelSelectorRules = levels[levelIdx] = levels[levelIdx] || [];
+			const nextLevelSelectorRules = levels[levelIdx + 1] = levels[levelIdx + 1] || [];
 
 			const element = {
 				name: name,
 				id: attrs.id,
 				attrs: attrs,
-				classNames: new Set([attrs['class'], attrs['data-class']].filter(Boolean).join(' ').split(' ').filter(Boolean).sort())
+				classNames: [attrs['class'], attrs['data-class']]
+					.join(' ')
+					.split(' ')
+					.filter(Boolean)
 			};
 
-			unknownSelectors.forEach(selector => {
-				const rule = selectorRuleMap[selector];
-
-				levelSelectorRules.add({
-					rule: rule,
-					selector: selector
-				});
-			});
-
-			levelSelectorRules.forEach(levelSelectorRule => {
-				const selector = levelSelectorRule.selector;
-				const rule = levelSelectorRule.rule;
-
-				if (!unknownSelectors.has(levelSelectorRule.selector)) {
-					return;
+			for (var i = 0; i < selectorRules.length; i++) {
+				const selectorRule = selectorRules[i];
+				
+				if (matchedSelectors.indexOf(selectorRule.selector) === -1) {
+					levelSelectorRules.push({
+						rule: selectorRule.rule,
+						selector: selectorRule.selector
+					});
 				}
+			}
 
-				const isMatch = match(element, rule);
+			for (var j = 0; j < levelSelectorRules.length; j++) {
+				const levelSelectorRule = levelSelectorRules[j];
+			
+				levelSelectorRule.matched = match(element, levelSelectorRule.rule);
 
-				if (isMatch) {
-					if (rule.rule) {
-						nextLevelSelectorRules.add({
-							rule: rule.rule,
-							selector: selector
+				if (levelSelectorRule.matched) {
+					if (levelSelectorRule.rule.rule) {
+						nextLevelSelectorRules.push({
+							rule: levelSelectorRule.rule.rule,
+							selector: levelSelectorRule.selector
 						});
 					} else {
-						knownSelectors.add(selector);
-						unknownSelectors.delete(selector);
+						matchedSelectors.push(levelSelectorRule.selector);
 					}
 				}
-			});
+			}
 
 			function match (element, rule) {
-				return (!rule.id || (rule.id === element.id)) && (!rule.tagName || (rule.tagName === '*' || rule.tagName === element.name)) && (!rule.classNames || (rule.classNames.filter(ruleClassName => element.classNames.has(ruleClassName)).length === rule.classNames.length));
+				const id = (!rule.id || (rule.id === element.id));
+				const name = (!rule.tagName || (rule.tagName === '*' || rule.tagName === element.name));
+				const classNames = (!rule.classNames || (rule.classNames.filter(ruleClassName => element.classNames.indexOf(ruleClassName) > -1).length === rule.classNames.length));
+
+				return id && name && classNames;
 			}
 		},
 		onclosetag: () => {
 			delete levels[levelIdx];
+			delete levels[levelIdx + 1];
 			levelIdx--;
 		}
 	});
-
+	
 	parser.write(htmlCode);
 	parser.end();
 
-	return knownSelectors;
+	return matchedSelectors;
 }
 
-function filterSelectorsFromCssAst (cssAst, selectorSet) {
-	const cssAstClone = clone(cssAst);
-	walk(cssAstClone.stylesheet);
+function filterSelectorsFromCssAst (cssAst, selectors) {
+	walk(cssAst.stylesheet);
 
-	return cssAstClone;
+	return cssAst;
 
 	function walk (node) {
 		node.rules = node.rules.reduce((rules, rule) => {
 			if (rule.type === 'rule') {
-				rule.selectors = rule.selectors.filter(selector => selectorSet.has(selector));
+				rule.selectors = rule.selectors.filter(selector => selectors.indexOf(selector) > -1);
 
 				if (rule.selectors.length > 0) {
 					rules.push(rule);
@@ -149,8 +156,4 @@ function filterSelectorsFromCssAst (cssAst, selectorSet) {
 			return rules;
 		}, []);
 	}
-}
-
-function clone (obj) {
-	return JSON.parse(JSON.stringify(obj));
 }
