@@ -1,3 +1,4 @@
+'use strict';
 const css = require('css');
 const htmlparser = require('htmlparser2');
 const CssSelectorParser = require('css-selector-parser').CssSelectorParser;
@@ -20,7 +21,6 @@ function getSelectorRulesFromCssAst(cssAst) {
 	cssSelectorParser.registerNestingOperators('>', '+', '~');
 	cssSelectorParser.registerAttrEqualityMods('^', '$', '*', '~');
 
-	const selectors = new Set();
 	const selectorRules = [];
 
 	walk(cssAst.stylesheet);
@@ -30,17 +30,15 @@ function getSelectorRulesFromCssAst(cssAst) {
 	function walk(node) {
 		for (var j = 0; j < node.rules.length; j++) {
 			const rule = node.rules[j];
-
-			if (rule.type === 'rule' && rule.selectors) {
+		
+			if (rule.type === 'rule') {
 				for (var i = 0; i < rule.selectors.length; i++) {
 					const selector = rule.selectors[i];
 
 					selectorRules.push({
 						selector: selector,
-						rule: cssSelectorParser.parse(selector).rule
+						rule: cssSelectorParser.parse(selector)
 					});
-
-					selectors.add(selector);
 				}
 			} else if (rule.type === 'media') {
 				walk(rule);
