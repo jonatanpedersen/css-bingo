@@ -1,5 +1,5 @@
 # css-bingo
-Every tick counts when creating good user epxeriences for mobile devices and slow networks. Don't let the browser do unnecessary work. css-bingo finds all extraneous rules in your CSS not used by your html and removes them.
+Every tick counts when creating good user experiences for mobile devices and slow networks. Don't let the browser do unnecessary work. css-bingo finds all extraneous rules and selectors in your CSS, not used in your html, and removes them.
 
 [![Build Status](https://travis-ci.org/jonatanpedersen/css-bingo.svg?branch=master)](https://travis-ci.org/jonatanpedersen/css-bingo)
 [![NPM Version](https://img.shields.io/npm/v/css-bingo.svg)](https://www.npmjs.com/package/css-bingo)
