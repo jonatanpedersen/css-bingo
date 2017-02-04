@@ -14,8 +14,8 @@
     "type": "git",
     "url": "git+https://github.com/jonatanpedersen/css-bingo.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jonatan Pedersen",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jonatanpedersen/css-bingo/issues"
   },
