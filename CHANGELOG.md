@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.4.3] - 2017-02-04
+### Added
+- Version 1.4.2 and 1.4.3 to CHANGELOG
+
+## [1.4.2] - 2017-02-04
+### Fixed
+- Consts in loops bug with node < 6 by setting strict mode
+
 ## [1.4.1] - 2017-02-04
 ### Added
 - Version 1.4.0 and 1.4.1 to CHANGELOG
