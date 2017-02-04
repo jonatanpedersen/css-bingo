@@ -1,16 +1,17 @@
 const css = require('css');
 const htmlparser = require('htmlparser2');
 const CssSelectorParser = require('css-selector-parser').CssSelectorParser;
+const debug = require('debug')('css-bingo');
 
 module.exports = cssBingo;
 
-function cssBingo (cssCode, htmlCode) {
+function cssBingo(cssCode, htmlCode) {
 	const cssAst = css.parse(cssCode);
 	const selectorRules = getSelectorRulesFromCssAst(cssAst);
-	const matchedSelectors = matchSelectorsInHtml (selectorRules, htmlCode);
-	const newCssAst = filterSelectorsFromCssAst(cssAst, matchedSelectors);
+	const unmatchedSelectors = matchSelectorsInHtml(selectorRules, htmlCode);
+	const newCssAst = filterSelectorsFromCssAst(cssAst, unmatchedSelectors);
 
-	return css.stringify(newCssAst, {compress:true});
+	return css.stringify(newCssAst, { compress: true });
 }
 
 function getSelectorRulesFromCssAst(cssAst) {
@@ -18,7 +19,7 @@ function getSelectorRulesFromCssAst(cssAst) {
 	cssSelectorParser.registerSelectorPseudos('has');
 	cssSelectorParser.registerNestingOperators('>', '+', '~');
 	cssSelectorParser.registerAttrEqualityMods('^', '$', '*', '~');
-	
+
 	const selectors = new Set();
 	const selectorRules = [];
 
@@ -26,7 +27,7 @@ function getSelectorRulesFromCssAst(cssAst) {
 
 	return selectorRules;
 
-	function walk (node) {
+	function walk(node) {
 		if (!node.rules) {
 			return;
 		}
@@ -37,7 +38,7 @@ function getSelectorRulesFromCssAst(cssAst) {
 			if (rule.type === 'rule' && rule.selectors) {
 				for (var i = 0; i < rule.selectors.length; i++) {
 					const selector = rule.selectors[i];
-					
+
 					if (!selectors.has(selector)) {
 						selectorRules.push({
 							selector: selector,
@@ -54,7 +55,7 @@ function getSelectorRulesFromCssAst(cssAst) {
 	}
 }
 
-function matchSelectorsInHtml (selectorRules, htmlCode) {
+function matchSelectorsInHtml(selectorRules, htmlCode) {
 	var levelIdx = -1;
 	var levels = [];
 
@@ -64,8 +65,9 @@ function matchSelectorsInHtml (selectorRules, htmlCode) {
 
 	for (var x = 0; x < selectorRules.length; x++) {
 		const selectorRule = selectorRules[x];
-		
-		if (selectorRule.rule.type === 'rule' && selectorRule.rule.rule === undefined && selectorRule.rule.attrs === undefined && selectorRule.rule.pseudos === undefined) {
+		const rule = selectorRule.rule;
+
+		if (rule.type === 'rule' && rule.attrs === undefined) {
 			unmatchedSelectors.add(selectorRule.selector);
 			unmatchedSelectorRules.push(selectorRule);
 		} else {
@@ -87,26 +89,40 @@ function matchSelectorsInHtml (selectorRules, htmlCode) {
 				classNames: new Set([attrs['class'], attrs['data-class']].join(' ').split(' ').filter(Boolean))
 			};
 
+			const tmpSelectorRules = [];
+
 			for (var i = 0; i < unmatchedSelectorRules.length; i++) {
-				const selectorRule = unmatchedSelectorRules[i];
-				
-				levelSelectorRules.push({
-					rule: selectorRule.rule,
-					selector: selectorRule.selector
-				});
+				tmpSelectorRules.push(unmatchedSelectorRules[i]);
 			}
 
 			for (var j = 0; j < levelSelectorRules.length; j++) {
-				const levelSelectorRule = levelSelectorRules[j];
-				
-				levelSelectorRule.matched = match(element, levelSelectorRule.rule);
+				tmpSelectorRules.push(levelSelectorRules[j]);
+			}
 
-				if (levelSelectorRule.matched) {
+			for (var k = 0; k < tmpSelectorRules.length; k++) {
+				processSelectorRules(tmpSelectorRules[k]);
+			}
+
+			function processSelectorRules(levelSelectorRule) {
+				const matches = match(element, levelSelectorRule.rule);
+				
+				if (matches) {
+					// If there is a match then we check whether the rule has any child rules,
+					// If it does we send the child rule to the next level,
+					// otherwise it means that the whole selector has been matched can remove it
+					// from the unmatched selectors set and add it matched selectors set.
 					if (levelSelectorRule.rule.rule) {
-						nextLevelSelectorRules.push({
+						const nestingOperator = levelSelectorRule.rule.rule.nestingOperator;
+						const newLevelSelectorRule = {
 							rule: levelSelectorRule.rule.rule,
 							selector: levelSelectorRule.selector
-						});
+						};
+
+						if (nestingOperator === null || nestingOperator === '>') {
+							nextLevelSelectorRules.push(newLevelSelectorRule);
+						} else if (nestingOperator === '+' || nestingOperator === '~') {
+							levelSelectorRules.push(newLevelSelectorRule);
+						}
 					} else {
 						for (var y = 0; y < unmatchedSelectorRules.length; y++) {
 							if (unmatchedSelectorRules[y].selector === levelSelectorRule.selector) {
@@ -117,42 +133,50 @@ function matchSelectorsInHtml (selectorRules, htmlCode) {
 							}
 						}
 					}
+				} else {
+					// If we don't have a match then check the nesting operator.
+					// If the nesting operator is null i.e. .class .class then we
+					// can push the levelSelectorRule to the next level.
+					if (levelSelectorRule.rule.nestingOperator === null) {
+						nextLevelSelectorRules.push(levelSelectorRule);
+					}
 				}
 			}
 
-			function match (element, rule) {
+			function match(element, rule) {
 				const id = (!rule.id || (rule.id === element.id));
-				const name = (!rule.tagName || (rule.tagName === '*' || rule.tagName === element.name));
+				const name = (!rule.tagName || rule.tagName === element.name || rule.tagName === '*');
 				const classNames = (!rule.classNames || (rule.classNames.filter(ruleClassName => element.classNames.has(ruleClassName)).length === rule.classNames.length));
 
 				return id && name && classNames;
 			}
 		},
 		onclosetag: () => {
-			delete levels[levelIdx];
 			delete levels[levelIdx + 1];
 			levelIdx--;
 		}
 	});
-	
+
 	parser.write(htmlCode);
 	parser.end();
 
 	return unmatchedSelectors;
 }
 
-function filterSelectorsFromCssAst (cssAst, selectors) {
+function filterSelectorsFromCssAst(cssAst, selectors) {
 	walk(cssAst.stylesheet);
 
 	return cssAst;
 
-	function walk (node) {
+	function walk(node) {
 		node.rules = node.rules.reduce((rules, rule) => {
 			if (rule.type === 'rule') {
 				rule.selectors = rule.selectors.filter(selector => !selectors.has(selector));
 
 				if (rule.selectors.length > 0) {
 					rules.push(rule);
+				} else {
+					debug('removed rule: %o', rule);
 				}
 			} else if (rule.type === 'media') {
 				walk(rule);
