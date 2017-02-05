@@ -4,8 +4,11 @@
 ### Fixed
 - Use `new Array()` and direct assignment instead of `array.push()` as it is faster
 - Use `for` instead of `reduce` as it is faster
-- Auhtor, description and license in `package.json`
 - Module order in `index.js`
+- License in `package.json`
+
+### Changed
+- Author and description in `package.json`
 
 ## [1.4.3] - 2017-02-04
 ### Added
