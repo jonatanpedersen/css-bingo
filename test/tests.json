@@ -267,5 +267,11 @@
         "css": ".baz{color:red;}.foo{color:red;}.qux{color:red;}",
         "html": "<html><body><div class=\"qux\"></div></body></html>",
         "expected": ".qux{color:red;}"
+    },
+    {
+        "description": "match css selectors in scripts in the html",
+        "css": ".foo{color:#c00;}.foo--bar{color:#0c0;}",
+        "html": "<html><body><div class=\"foo\">foo</div><script>const fooElement = document.querySelector('.foo');fooElement.classList.add(\"foo--bar\");</script></body></html>",
+        "expected": ".foo{color:#c00;}.foo--bar{color:#0c0;}"
     }
 ]
