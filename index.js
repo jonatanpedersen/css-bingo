@@ -3,6 +3,7 @@ const css = require('css');
 const CssSelectorParser = require('css-selector-parser').CssSelectorParser;
 const debug = require('debug')('css-bingo');
 const htmlparser = require('htmlparser2');
+const quoted = require('quoted');
 
 module.exports = cssBingo;
 
@@ -150,12 +151,12 @@ function matchSelectorsInHtml(selectorRules, htmlCode) {
 		},
 		ontext: text => {
 			if (element.name === 'script') {
-				const literals = getLiteralsFromScript(text);
+				const texts = new Set(quoted(text));
 
 				for (var x = 0; x < selectorRules.length; x++) {
 					const selectorRule = selectorRules[x];
 
-					if (literals.has(selectorRule.selector)) {
+					if (texts.has(selectorRule.selector)) {
 						matchedSelectors.add(selectorRule.selector);
 						unmatchedSelectors.delete(selectorRule.selector);
 					}
@@ -198,45 +199,4 @@ function removeUnmatchedSelectorsAndRulesFromCssAst(cssAst, unmatchedSelectors) 
 
 		node.rules = newRules;
 	}
-}
-
-function getLiteralsFromScript (script) {
-	const backslash = '\\';
-	const doubleQuote = '\"';
-	const singleQuote = '\'';
-	const emptyString = '';
-	const literals = new Set();
-	var quote;
-	var escaping;
-	var recording;
-	var literal;
-
-	for (var i = 0; i < script.length; i++) {
-		const char = script[i];
-
-		escaping = char === backslash && !escaping;
-		
-		if (!escaping) {
-			if (!recording) {
-				if (char === singleQuote || char === doubleQuote) {
-					quote = char;
-					recording = true;
-					literal = emptyString;
-				}
-			} else {
-				if (char === quote) {
-					quote = emptyString;
-					recording = false;
-					
-					if (literal !== emptyString) {
-						literals.add(literal);
-					}
-				} else {
-					literal += char;
-				}
-			}
-		}
-	}
-
-	return literals;
 }
