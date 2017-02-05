@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.4.4] - 2017-02-05
+### Fixed
+- Use `new Array()` and direct assignment instead of `array.push()` as it is faster
+- Use `for` instead of `reduce` as it is faster
+- Auhtor, description and license in `package.json`
+- Module order in `index.js`
+
 ## [1.4.3] - 2017-02-04
 ### Added
 - Version 1.4.2 and 1.4.3 to CHANGELOG
