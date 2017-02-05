@@ -269,9 +269,27 @@
         "expected": ".qux{color:red;}"
     },
     {
-        "description": "match css selectors in scripts in the html",
+        "description": "keeps matched rule when selector is found inside a script",
         "css": ".foo{color:#c00;}.foo--bar{color:#0c0;}",
-        "html": "<html><body><div class=\"foo\">foo</div><script>const fooElement = document.querySelector('.foo');fooElement.classList.add(\"foo--bar\");</script></body></html>",
+        "html": "<html><body><div class=\"foo\">foo</div><script>const selectors = ['.foo--bar'];const fooElement = document.querySelector('.foo');fooElement.classList.add(\"foo--bar\");</script></body></html>",
+        "expected": ".foo{color:#c00;}.foo--bar{color:#0c0;}"
+    },
+    {
+        "description": "keeps matched rule when selector is found inside a script comment",
+        "css": ".foo{color:#c00;}.foo--bar{color:#0c0;}",
+        "html": "<html><body><div class=\"foo\">foo</div><script>/*'.foo--bar'*/const fooElement = document.querySelector('.foo');fooElement.classList.add(\"foo--bar\");</script></body></html>",
+        "expected": ".foo{color:#c00;}.foo--bar{color:#0c0;}"
+    },
+    {
+        "description": "removes unmatched matched rule when selector is not found inside a script",
+        "css": ".foo{color:#c00;}.foo--bar{color:#0c0;}",
+        "html": "<html><body><div class=\"foo\">foo</div><script>const fooElement = document.querySelector('.bar');fooElement.classList.add(\"bar--baz\");</script></body></html>",
+        "expected": ".foo{color:#c00;}"
+    },
+    {
+        "description": "keeps matched rule when selector is found inside a script full of garbage literals",
+        "css": ".foo{color:#c00;}.foo--bar{color:#0c0;}",
+        "html": "<html><body><div class=\"foo\">foo</div><script>\"use s\\\\trict;\"\"\"\".foo--bar\"</script></body></html>",
         "expected": ".foo{color:#c00;}.foo--bar{color:#0c0;}"
     }
 ]

@@ -62,19 +62,21 @@ function matchSelectorsInHtml(selectorRules, htmlCode) {
 		unmatchedSelectorRules.push(selectorRule);
 	}
 
+	var element;
+
 	const parser = new htmlparser.Parser({
 		onopentag: (name, attrs) => {
 			levelIdx++;
 
-			const levelSelectorRules = levels[levelIdx] = levels[levelIdx] || [];
-			const nextLevelSelectorRules = levels[levelIdx + 1] = levels[levelIdx + 1] || [];
-
-			const element = {
+			element = {
 				name: name,
 				id: attrs.id,
 				attrs: attrs,
 				classNames: new Set([attrs['class'], attrs['data-class']].join(' ').split(' ').filter(Boolean))
 			};
+
+			const levelSelectorRules = levels[levelIdx] = levels[levelIdx] || [];
+			const nextLevelSelectorRules = levels[levelIdx + 1] = levels[levelIdx + 1] || [];
 
 			// The unmatached and level selector rules arrays can be mutated by selector rule processing.
 			// Create a tmp array to hold all the unmatched and the selector rules to avoid iterating mutating arrays.
@@ -145,6 +147,20 @@ function matchSelectorsInHtml(selectorRules, htmlCode) {
 		onclosetag: () => {
 			delete levels[levelIdx + 1];
 			levelIdx--;
+		},
+		ontext: text => {
+			if (element.name === 'script') {
+				const literals = getLiteralsFromScript(text);
+
+				for (var x = 0; x < selectorRules.length; x++) {
+					const selectorRule = selectorRules[x];
+
+					if (literals.has(selectorRule.selector)) {
+						matchedSelectors.add(selectorRule.selector);
+						unmatchedSelectors.delete(selectorRule.selector);
+					}
+				}
+			}
 		}
 	});
 
@@ -182,4 +198,45 @@ function removeUnmatchedSelectorsAndRulesFromCssAst(cssAst, unmatchedSelectors) 
 
 		node.rules = newRules;
 	}
+}
+
+function getLiteralsFromScript (script) {
+	const backslash = '\\';
+	const doubleQuote = '\"';
+	const singleQuote = '\'';
+	const emptyString = '';
+	const literals = new Set();
+	var quote;
+	var escaping;
+	var recording;
+	var literal;
+
+	for (var i = 0; i < script.length; i++) {
+		const char = script[i];
+
+		escaping = char === backslash && !escaping;
+		
+		if (!escaping) {
+			if (!recording) {
+				if (char === singleQuote || char === doubleQuote) {
+					quote = char;
+					recording = true;
+					literal = emptyString;
+				}
+			} else {
+				if (char === quote) {
+					quote = emptyString;
+					recording = false;
+					
+					if (literal !== emptyString) {
+						literals.add(literal);
+					}
+				} else {
+					literal += char;
+				}
+			}
+		}
+	}
+
+	return literals;
 }
