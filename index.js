@@ -76,16 +76,20 @@ function matchSelectorsInHtml(selectorRules, htmlCode) {
 				classNames: new Set([attrs['class'], attrs['data-class']].join(' ').split(' ').filter(Boolean))
 			};
 
-			const tmpSelectorRules = [];
+			// The unmatached and level selector rules arrays can be mutated by selector rule processing.
+			// Create a tmp array to hold all the unmatched and the selector rules to avoid iterating mutating arrays.
+			// new Array() and array[] is used as it is faster than array.push() and Array.concat()
+			const tmpSelectorRules = new Array(unmatchedSelectorRules.length + levelSelectorRules.length);
 
 			for (var i = 0; i < unmatchedSelectorRules.length; i++) {
-				tmpSelectorRules.push(unmatchedSelectorRules[i]);
+				tmpSelectorRules[i] = unmatchedSelectorRules[i];
 			}
 
 			for (var j = 0; j < levelSelectorRules.length; j++) {
-				tmpSelectorRules.push(levelSelectorRules[j]);
+				tmpSelectorRules[i + j] = levelSelectorRules[j];
 			}
-
+			
+			// Process all selector rules
 			for (var k = 0; k < tmpSelectorRules.length; k++) {
 				processSelectorRules(tmpSelectorRules[k]);
 			}
