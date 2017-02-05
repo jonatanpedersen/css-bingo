@@ -1,5 +1,5 @@
 # css-bingo
-Every tick counts when creating good user experiences for mobile devices and slow networks. Don't let the browser do unnecessary work. css-bingo finds all extraneous rules and selectors in your CSS, not used in your html, and removes them.
+Every byte counts when creating good user experiences for mobile devices and slow networks. Don't let the browser do unnecessary work. css-bingo finds all extraneous rules and selectors in your CSS, not used in your html, and removes them.
 
 [![Build Status](https://travis-ci.org/jonatanpedersen/css-bingo.svg?branch=master)](https://travis-ci.org/jonatanpedersen/css-bingo)
 [![NPM Version](https://img.shields.io/npm/v/css-bingo.svg)](https://www.npmjs.com/package/css-bingo)
@@ -150,7 +150,7 @@ I built css-bingo because none of the existing libraries that I could find had t
 ## Contributing
 Pull-requests are welcome. Check the issue list for something to do, or submit your own ideas. Performance improvements and bugfixes are always welcome.
 
-Clone the repository:
+Clone repository:
 
 ``` bash
 $ git clone git@github.com:jonatanpedersen/css-bingo.git
@@ -163,14 +163,14 @@ $ npm install
 ```
 
 ### Test
-[mocha](https://github.com/mochajs/mocha) is used describe and run tests.
+[mocha](https://github.com/mochajs/mocha) is used to describe and run tests.
 
-Run Tests:
+Run tests:
 ``` bash
 $ npm test
 ```
 
-Functional tests are described `./test/tests.json`.
+Functional tests are described in `./test/tests.json`.
 
 ### Debugging
 [debug](https://github.com/visionmedia/debug) is used with the namespace `css-bingo`. Enable debugging by setting the DEBUG environment variable `DEBUG=css-bingo`. 
