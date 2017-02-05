@@ -1,8 +1,8 @@
 'use strict';
 const css = require('css');
-const htmlparser = require('htmlparser2');
 const CssSelectorParser = require('css-selector-parser').CssSelectorParser;
 const debug = require('debug')('css-bingo');
+const htmlparser = require('htmlparser2');
 
 module.exports = cssBingo;
 
@@ -10,9 +10,9 @@ function cssBingo(cssCode, htmlCode) {
 	const cssAst = css.parse(cssCode);
 	const selectorRules = getSelectorRulesFromCssAst(cssAst);
 	const unmatchedSelectors = matchSelectorsInHtml(selectorRules, htmlCode);
-	const newCssAst = filterSelectorsFromCssAst(cssAst, unmatchedSelectors);
+	removeUnmatchedSelectorsAndRulesFromCssAst(cssAst, unmatchedSelectors);
 
-	return css.stringify(newCssAst, { compress: true });
+	return css.stringify(cssAst, { compress: true });
 }
 
 function getSelectorRulesFromCssAst(cssAst) {
@@ -150,31 +150,32 @@ function matchSelectorsInHtml(selectorRules, htmlCode) {
 	return unmatchedSelectors;
 }
 
-function filterSelectorsFromCssAst(cssAst, selectors) {
+function removeUnmatchedSelectorsAndRulesFromCssAst(cssAst, unmatchedSelectors) {
 	walk(cssAst.stylesheet);
 
-	return cssAst;
-
 	function walk(node) {
-		node.rules = node.rules.reduce((rules, rule) => {
+		const newRules = [];
+
+		for (var i = 0; i < node.rules.length; i++) {
+			const rule = node.rules[i];
 			if (rule.type === 'rule') {
-				rule.selectors = rule.selectors.filter(selector => !selectors.has(selector));
+				rule.selectors = rule.selectors.filter(selector => !unmatchedSelectors.has(selector));
 
 				if (rule.selectors.length > 0) {
-					rules.push(rule);
+					newRules.push(rule);
 				} else {
 					debug('removed rule: %o', rule);
 				}
 			} else if (rule.type === 'media') {
 				walk(rule);
 				if (rule.rules.length > 0) {
-					rules.push(rule);
+					newRules.push(rule);
 				}
 			} else {
-				rules.push(rule);
+				newRules.push(rule);
 			}
+		}
 
-			return rules;
-		}, []);
+		node.rules = newRules;
 	}
 }
