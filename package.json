@@ -1,6 +1,6 @@
 {
   "name": "css-bingo",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Every byte counts when creating good user experiences for mobile devices and slow networks. Don't let the browser do unnecessary work. css-bingo finds all extraneous rules and selectors in your CSS, not used in your html, and removes them.",
   "main": "index.js",
   "scripts": {
