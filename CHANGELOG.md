@@ -1,5 +1,19 @@
 # Change Log
 
+## [1.4.6] - 2017-09-27
+### Fixed
+ - Changelog for `1.4.5`
+
+### Added
+- `test` dir to `.npmignore`
+
+## [1.4.5] - 2017-09-27
+### Added
+- node 8 to `travis.yml`
+
+### Changed
+- Versions of `eslint`, `mocha-eslint` and `debug` to latest
+
 ## [1.4.4] - 2017-02-05
 ### Fixed
 - Use `new Array()` and direct assignment instead of `array.push()` as it is faster
