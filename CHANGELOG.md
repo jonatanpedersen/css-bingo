@@ -2,7 +2,7 @@
 
 ## [1.4.6] - 2017-09-27
 ### Fixed
- - Changelog for `1.4.5`
+- Changelog for `1.4.5`
 
 ### Added
 - `test` dir to `.npmignore`
