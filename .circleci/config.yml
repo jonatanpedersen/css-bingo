@@ -15,7 +15,8 @@ jobs:
       - persist_to_workspace:
         root: workspace
         paths:
-          - **/*
+          - node_modules
+          - test
   test:
     <<: *defaults
     steps:
