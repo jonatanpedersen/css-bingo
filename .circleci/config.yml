@@ -1,5 +1,4 @@
 defaults: &defaults
-  working_directory: /tmp
   docker:
     - image: circleci/node:8.9.4
 
@@ -9,27 +8,31 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - restore_cache: # special step to restore the dependency cache
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: install
           command: npm install
-      - persist_to_workspace:
-          root: workspace
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
           paths:
-            - node_modules
-            - test
+            - ./node_modules
+
   test:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: /tmp/workspace
+      - checkout
+      - restore_cache: # special step to restore the dependency cache
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: test
           command: npm test
   cover:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: /tmp/workspace
+      - checkout
+      - restore_cache: # special step to restore the dependency cache
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: cover
           command: npm run cover
