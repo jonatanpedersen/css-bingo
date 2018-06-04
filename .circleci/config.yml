@@ -12,10 +12,10 @@ jobs:
       - run:
           name: install
           command: npm install
-       - persist_to_workspace:
-          root: workspace
-          paths:
-            - **/*
+      - persist_to_workspace:
+        root: workspace
+        paths:
+          - **/*
   test:
     <<: *defaults
     steps:
