@@ -16,22 +16,22 @@ jobs:
       - run:
           name: test
           command: npm test
-  coverage:
+  cover:
     docker:
       - image: circleci/node:8.9.4
     steps:
       - checkout
       - run:
-          name: coverage
-          command: npm run coverage
+          name: cover
+          command: npm run cover
 workflows:
   version: 2
-  build-test-and-deploy:
+  build-test-and-cover:
     jobs:
       - build
       - test:
           requires:
             - build
-      - coverage
+      - cover:
           requires:
             - build
