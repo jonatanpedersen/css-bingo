@@ -27,7 +27,7 @@
     "htmlparser2": "^3.9.2"
   },
   "devDependencies": {
-    "coveralls": "^3.0.2",
+    "coveralls": "^3.0.11",
     "eslint": "^5.2.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.0.0",
