@@ -1,2 +1,2 @@
-import cssBingo from './index.js';
+import cssBingo from './index.cjs';
 export default cssBingo;
