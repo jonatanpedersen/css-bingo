@@ -2,7 +2,12 @@
   "name": "css-bingo",
   "version": "1.4.6",
   "description": "Every byte counts when creating good user experiences for mobile devices and slow networks. Don't let the browser do unnecessary work. css-bingo finds all extraneous rules and selectors in your CSS, not used in your html, and removes them.",
+  "type": "module",
   "main": "index.js",
+  "exports": {
+    "import": "./index.mjs",
+    "require": "./index.js"
+  },
   "scripts": {
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
