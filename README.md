@@ -115,7 +115,7 @@ Element Attributes are ignored.
 #### pseudo-classes
 Pseudo Classes are ignored.
 
-| css | html | output |
+| [css](https://www.scaler.com/topics/hover-css/) | html | output |
 |---|---|---|
 | `button:hover{color:#c00;}` | `<button></button>` | `button:hover{color:#c00;}` |
 | `button:hover{color:#c00;}` | `<input />` |  |
